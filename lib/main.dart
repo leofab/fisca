@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './screens/onboarding/onboarding_screen.dart';
+import 'utils/theme.dart';
 
 void main() {
   runApp(const MainApp());
@@ -19,6 +20,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: appTheme,
       home: Scaffold(
         body: _screens[_currentIndex],
       ),

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import './screens/onboarding/onboarding_screen.dart';
+import 'package:app/screens/auth/login_screen.dart';
 import 'utils/theme.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    const MainApp(),
+  );
 }
 
 class MainApp extends StatefulWidget {
@@ -14,16 +18,16 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  final int _currentIndex = 0;
-
-  final List<Widget> _screens = [OnboardingScreen()];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: appTheme,
-      home: Scaffold(
-        body: _screens[_currentIndex],
-      ),
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/onboarding', // Start with onboarding
+      routes: {
+        '/onboarding': (context) => const OnboardingScreen(),
+        '/login': (context) => const LoginScreen(),
+      },
     );
   }
 }

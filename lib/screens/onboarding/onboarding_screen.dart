@@ -40,7 +40,9 @@ class OnboardingScreen extends StatelessWidget {
                 const SizedBox(height: 18),
                 if (viewModel.currentPageIndex == viewModel.totalPages - 1)
                   ElevatedButton(
-                    onPressed: viewModel.goToLogin,
+                    onPressed: () {
+                      viewModel.goToLogin(context);
+                    },
                     child: const Text('Start'),
                   )
               ],

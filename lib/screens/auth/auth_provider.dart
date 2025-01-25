@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,19 +7,36 @@ import 'package:logger/logger.dart';
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   User? _user;
   bool _isLoading = false;
+  Map<String, dynamic>? _userData;
 
   User? get user => _user;
   bool get isLoading => _isLoading;
+  Map<String, dynamic>? get userData => _userData;
 
   AuthProvider() {
     try {
-      _auth.authStateChanges().listen((User? user) {
+      _auth.authStateChanges().listen((User? user) async {
         _user = user;
+        if (user != null) {
+          await _fetchUserData(user.uid);
+        }
         notifyListeners();
       });
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  Future<void> _fetchUserData(String uid) async {
+    try {
+      final doc = await _firestore.collection('users').doc(uid).get();
+      if (doc.exists) {
+        _userData = doc.data();
+      }
     } catch (e) {
       Logger().e(e);
     }
@@ -57,6 +73,8 @@ class AuthProvider extends ChangeNotifier {
           'photoUrl': _user!.photoURL,
           'createdAt': FieldValue.serverTimestamp(),
         });
+
+        await _fetchUserData(_user!.uid);
       }
 
       _isLoading = false;
@@ -67,5 +85,13 @@ class AuthProvider extends ChangeNotifier {
       Logger().e(e);
       rethrow;
     }
+  }
+
+  Future<void> signOut() async {
+    await _googleSignIn.signOut();
+    await _auth.signOut();
+    _user = null;
+    _userData = null;
+    notifyListeners();
   }
 }

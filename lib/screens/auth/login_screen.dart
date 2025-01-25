@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:provider/provider.dart';
 import 'auth_provider.dart';
@@ -30,11 +31,12 @@ class LoginScreen extends StatelessWidget {
               try {
                 await authProvider.signInWithGoogle();
                 if (context.mounted) {
-                  Navigator.pushReplacementNamed(context, '/home');
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/home', (_) => false);
                 }
               } catch (e) {
                 if (context.mounted) {
-                  print(e);
+                  Logger().e(e);
                 }
               }
             },

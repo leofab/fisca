@@ -29,7 +29,7 @@ class OnboardingViewModel with ChangeNotifier {
 
   void goToLogin(BuildContext context) {
     if (_currentPageIndex == _imagePaths.length - 1) {
-      Navigator.of(context).pushNamed('/login');
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
     }
   }
 }

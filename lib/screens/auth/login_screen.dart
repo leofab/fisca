@@ -24,23 +24,25 @@ class LoginScreen extends StatelessWidget {
           const Text('Login',
               style: TextStyle(fontSize: 18, color: Colors.black)),
           const SizedBox(height: 24),
-          SignInButton(
-            Buttons.google,
-            text: "Sign up with Google",
-            onPressed: () async {
-              try {
-                await authProvider.signInWithGoogle();
-                if (context.mounted) {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/home', (_) => false);
-                }
-              } catch (e) {
-                if (context.mounted) {
-                  Logger().e(e);
-                }
-              }
-            },
-          )
+          authProvider.isLoading
+              ? const CircularProgressIndicator()
+              : SignInButton(
+                  Buttons.google,
+                  text: "Sign up with Google",
+                  onPressed: () async {
+                    try {
+                      await authProvider.signInWithGoogle();
+                      if (context.mounted) {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/home', (_) => false);
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        Logger().e(e);
+                      }
+                    }
+                  },
+                )
         ],
       ),
     ));

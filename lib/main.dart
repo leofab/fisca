@@ -38,13 +38,17 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
       theme: appTheme,
       debugShowCheckedModeBanner: false,
-      home: authProvider.isLoading
-          ? const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            )
-          : authProvider.user != null
-              ? const HomeScreen()
-              : const OnboardingScreen(),
+      home: authProvider.userData == null
+          ? const OnboardingScreen()
+          : authProvider.isLoading
+              ? const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : authProvider.user != null
+                  ? const HomeScreen()
+                  : const OnboardingScreen(),
       routes: {
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),

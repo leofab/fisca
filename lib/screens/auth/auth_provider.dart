@@ -45,6 +45,7 @@ class AuthProvider extends ChangeNotifier {
         _userData = doc.data();
         Logger().d('User data fetched: $_userData');
       } else {
+        _userData = null;
         Logger().d('User data does not exist in Firestore');
       }
     } catch (e) {

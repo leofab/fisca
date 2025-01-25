@@ -4,7 +4,7 @@ import './screens/onboarding/onboarding_screen.dart';
 import 'package:app/screens/auth/login_screen.dart';
 import 'package:app/screens/home/home_screen.dart';
 import 'package:provider/provider.dart';
-import 'screens/auth/auth_provider.dart';
+import 'screens/auth/auth_provider.dart' as auth_provider;
 import 'utils/theme.dart';
 import 'package:logger/logger.dart';
 
@@ -19,7 +19,7 @@ void main() async {
   }
 
   runApp(ChangeNotifierProvider(
-    create: (_) => AuthProvider(),
+    create: (_) => auth_provider.AuthProvider(),
     child: const MainApp(),
   ));
 }
@@ -34,11 +34,17 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
+    final authProvider = Provider.of<auth_provider.AuthProvider>(context);
     return MaterialApp(
       theme: appTheme,
       debugShowCheckedModeBanner: false,
-      initialRoute: authProvider.user != null ? '/home' : '/onboarding',
+      home: authProvider.isLoading
+          ? const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            )
+          : authProvider.user != null
+              ? const HomeScreen()
+              : const OnboardingScreen(),
       routes: {
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),

@@ -18,12 +18,19 @@ class AuthProvider extends ChangeNotifier {
   Map<String, dynamic>? get userData => _userData;
 
   AuthProvider() {
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
     try {
+      _isLoading = true;
       _auth.authStateChanges().listen((User? user) async {
         _user = user;
+        Logger().d('User state changed: ${user?.uid}');
         if (user != null) {
           await _fetchUserData(user.uid);
         }
+        _isLoading = false;
         notifyListeners();
       });
     } catch (e) {
@@ -36,6 +43,9 @@ class AuthProvider extends ChangeNotifier {
       final doc = await _firestore.collection('users').doc(uid).get();
       if (doc.exists) {
         _userData = doc.data();
+        Logger().d('User data fetched: $_userData');
+      } else {
+        Logger().d('User data does not exist in Firestore');
       }
     } catch (e) {
       Logger().e(e);

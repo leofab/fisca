@@ -28,13 +28,14 @@ class LoginScreen extends StatelessWidget {
             text: "Sign up with Google",
             onPressed: () async {
               try {
-                await authProvider.signInWithGoogle(context);
-                // Navigate to the home screen after successful login
-                Navigator.pushReplacementNamed(context, '/home');
+                await authProvider.signInWithGoogle();
+                if (context.mounted) {
+                  Navigator.pushReplacementNamed(context, '/home');
+                }
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error: $e')),
-                );
+                if (context.mounted) {
+                  print(e);
+                }
               }
             },
           )

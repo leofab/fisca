@@ -5,14 +5,17 @@ import 'package:app/screens/auth/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth/auth_provider.dart';
 import 'utils/theme.dart';
+import 'package:logger/logger.dart';
+import 'package:app/screens/home/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final logger = Logger();
   try {
     await Firebase.initializeApp();
-    print('Firebase initialized');
+    logger.d('Firebase initialized');
   } catch (e) {
-    print(e);
+    logger.e(e);
   }
 
   runApp(ChangeNotifierProvider(
@@ -38,6 +41,7 @@ class _MainAppState extends State<MainApp> {
       routes: {
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
       },
     );
   }

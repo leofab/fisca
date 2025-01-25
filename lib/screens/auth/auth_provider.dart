@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -15,15 +16,17 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   AuthProvider() {
-    // Check if the user is already signed in
-    _auth.authStateChanges().listen((User? user) {
-      _user = user;
-      notifyListeners();
-    });
+    try {
+      _auth.authStateChanges().listen((User? user) {
+        _user = user;
+        notifyListeners();
+      });
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
-  // Sign in with Google
-  Future<void> signInWithGoogle(BuildContext context) async {
+  Future<void> signInWithGoogle() async {
     try {
       _isLoading = true;
       notifyListeners();
@@ -42,11 +45,26 @@ class AuthProvider extends ChangeNotifier {
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
       _user = userCredential.user;
+
+      if (_user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_user!.uid)
+            .set({
+          'uid': _user!.uid,
+          'name': _user!.displayName,
+          'email': _user!.email,
+          'photoUrl': _user!.photoURL,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+
       _isLoading = false;
       notifyListeners();
     } catch (e) {
       _isLoading = false;
       notifyListeners();
+      Logger().e(e);
       rethrow;
     }
   }

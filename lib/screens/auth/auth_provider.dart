@@ -26,9 +26,9 @@ class AuthProvider extends ChangeNotifier {
       _isLoading = true;
       _auth.authStateChanges().listen((User? user) async {
         _user = user;
-        Logger().d('User state changed: ${user?.uid}');
         if (user != null) {
           await _fetchUserData(user.uid);
+          Logger().d('User state changed: ${user.uid}');
         }
         _isLoading = false;
         notifyListeners();

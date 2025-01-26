@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import './screens/onboarding/onboarding_screen.dart';
 import 'package:app/screens/auth/login_screen.dart';
-import 'package:app/screens/home/home_screen.dart';
+import 'package:app/screens/home/overview_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth/auth_provider.dart' as auth_provider;
 import 'utils/theme.dart';
@@ -47,12 +47,12 @@ class _MainAppState extends State<MainApp> {
                   ),
                 )
               : authProvider.user != null
-                  ? const HomeScreen()
+                  ? OverviewScreen()
                   : const OnboardingScreen(),
       routes: {
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
-        '/home': (context) => const HomeScreen(),
+        '/home': (context) => OverviewScreen(),
       },
     );
   }

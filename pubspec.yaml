@@ -16,6 +16,7 @@ dependencies:
   google_sign_in: any
   cloud_firestore: any
   logger: ^2.0.0
+  fl_chart: ^0.70.2
 
 dev_dependencies:
   flutter_test:

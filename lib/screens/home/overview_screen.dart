@@ -1,5 +1,5 @@
 import 'package:app/screens/auth/auth_provider.dart';
-import 'package:app/screens/charts/line_chart.dart';
+import 'package:app/screens/charts/line_chart.dart' as line_chart;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app/models/expense.dart';
@@ -54,7 +54,7 @@ class OverviewScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              LineChartWidget(),
+              line_chart.LineChartSample1(),
             ],
           )),
     );

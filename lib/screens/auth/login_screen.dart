@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:provider/provider.dart';
 import 'auth_provider.dart';
@@ -23,22 +24,25 @@ class LoginScreen extends StatelessWidget {
           const Text('Login',
               style: TextStyle(fontSize: 18, color: Colors.black)),
           const SizedBox(height: 24),
-          SignInButton(
-            Buttons.google,
-            text: "Sign up with Google",
-            onPressed: () async {
-              try {
-                await authProvider.signInWithGoogle();
-                if (context.mounted) {
-                  Navigator.pushReplacementNamed(context, '/home');
-                }
-              } catch (e) {
-                if (context.mounted) {
-                  print(e);
-                }
-              }
-            },
-          )
+          authProvider.isLoading
+              ? const CircularProgressIndicator()
+              : SignInButton(
+                  Buttons.google,
+                  text: "Sign up with Google",
+                  onPressed: () async {
+                    try {
+                      await authProvider.signInWithGoogle();
+                      if (context.mounted) {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/home', (_) => false);
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        Logger().e(e);
+                      }
+                    }
+                  },
+                )
         ],
       ),
     ));

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import './screens/onboarding/onboarding_screen.dart';
 import 'package:app/screens/auth/login_screen.dart';
 import 'package:app/screens/home/overview_screen.dart';
+import 'package:app/screens/camera/camera_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth/auth_provider.dart' as auth_provider;
 import 'utils/theme.dart';
@@ -53,6 +54,7 @@ class _MainAppState extends State<MainApp> {
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
         '/home': (context) => OverviewScreen(),
+        '/camera': (context) => const CameraScreen(),
       },
     );
   }

@@ -16,7 +16,6 @@ class OverviewScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: const Text('Home'),
         actions: [
           IconButton(
@@ -57,6 +56,12 @@ class OverviewScreen extends StatelessWidget {
               line_chart.LineChartSample1(),
             ],
           )),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamedAndRemoveUntil(context, '/camera', (_) => true);
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:app/screens/home/overview_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth/auth_provider.dart' as auth_provider;
 import 'package:app/screens/camera/camera_view_model.dart';
+import 'package:app/screens/extracted/extracted_view.dart';
 import 'utils/theme.dart';
 import 'package:logger/logger.dart';
 
@@ -57,6 +58,7 @@ class _MainAppState extends State<MainApp> {
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
         '/home': (context) => OverviewScreen(),
+        '/extracted': (context) => const ExtractedView(),
       },
     );
   }

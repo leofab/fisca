@@ -65,9 +65,15 @@ class OverviewScreen extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Image captured!')),
             );
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/extracted', (_) => true);
           }
         },
-        child: const Icon(Icons.add),
+        foregroundColor: Colors.deepPurple.shade800,
+        elevation: 12,
+        hoverElevation: 24,
+        splashColor: Colors.deepPurple.shade200,
+        child: const Icon(Icons.camera_alt),
       ),
     );
   }

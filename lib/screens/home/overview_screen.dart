@@ -3,6 +3,7 @@ import 'package:app/screens/charts/line_chart.dart' as line_chart;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app/models/expense.dart';
+import 'package:app/screens/camera/camera_view_model.dart';
 import 'package:app/mock/expenses_mock_data.dart';
 
 class OverviewScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class OverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final userData = authProvider.userData;
+    final cameraViewModel = Provider.of<CameraViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -57,8 +59,13 @@ class OverviewScreen extends StatelessWidget {
             ],
           )),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamedAndRemoveUntil(context, '/camera', (_) => true);
+        onPressed: () async {
+          await cameraViewModel.takePhoto();
+          if (cameraViewModel.capturedImage != null && context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Image captured!')),
+            );
+          }
         },
         child: const Icon(Icons.add),
       ),

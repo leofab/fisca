@@ -12,6 +12,27 @@ class GoogleTextExtractService {
         await textRecognizer.processImage(inputImage);
     String text = recognizedText.text;
     textRecognizer.close();
+    text = extractHighestValue(text) ?? text;
     return text;
+  }
+
+  String? extractHighestValue(String text) {
+    final regex = RegExp(r'\b\d+[.,]\d{2}\b');
+
+    final matches = regex.allMatches(text);
+
+    if (matches.isEmpty) {
+      return 'null';
+    }
+
+    final values = matches.map((match) {
+      String value = match.group(0)!;
+      value = value.replaceAll(',', '.');
+      return double.parse(value);
+    }).toList();
+
+    final highestValue = values.reduce((a, b) => a > b ? a : b);
+
+    return highestValue.toStringAsFixed(2);
   }
 }

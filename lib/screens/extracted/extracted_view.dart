@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:app/screens/camera/camera_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:app/service/google_text_extract_service.dart';
@@ -21,7 +19,19 @@ class ExtractedView extends StatelessWidget {
             future: GoogleTextExtractService()
                 .extractText(cameraViewModel.capturedImageFile),
             builder: (context, snapshot) {
-              return Center(child: Text(snapshot.data ?? ''));
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text('Valor: '),
+                    Center(
+                      child: Text(
+                          snapshot.hasData ? snapshot.data.toString() : 'null'),
+                    ),
+                  ],
+                ),
+              );
             }),
       );
     }

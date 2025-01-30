@@ -15,24 +15,56 @@ class ExtractedView extends StatelessWidget {
           automaticallyImplyLeading: true,
           title: const Text('Extracted Text'),
         ),
-        body: FutureBuilder(
-            future: GoogleTextExtractService()
-                .extractText(cameraViewModel.capturedImageFile),
-            builder: (context, snapshot) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text('Valor: '),
-                    Center(
-                      child: Text(
-                          snapshot.hasData ? snapshot.data.toString() : 'null'),
-                    ),
-                  ],
-                ),
-              );
-            }),
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Center(
+                child: FutureBuilder(
+                    future: GoogleTextExtractService()
+                        .extractText(cameraViewModel.capturedImageFile),
+                    builder: (context, snapshot) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text('CNPJ: '),
+                            Center(
+                              child: Text(snapshot.hasData
+                                  ? GoogleTextExtractService()
+                                      .extractCnpj(snapshot.data!)!
+                                  : 'null'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+              ),
+              const SizedBox(height: 24),
+              Center(
+                child: FutureBuilder(
+                    future: GoogleTextExtractService()
+                        .extractText(cameraViewModel.capturedImageFile),
+                    builder: (context, snapshot) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text('Valor: '),
+                            Center(
+                              child: Text(snapshot.hasData
+                                  ? GoogleTextExtractService()
+                                      .extractHighestValue(snapshot.data!)!
+                                  : 'null'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+              ),
+            ]),
       );
     }
     return Scaffold(

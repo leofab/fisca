@@ -12,12 +12,11 @@ class GoogleTextExtractService {
         await textRecognizer.processImage(inputImage);
     String text = recognizedText.text;
     textRecognizer.close();
-    text = extractHighestValue(text) ?? text;
     return text;
   }
 
   String? extractHighestValue(String text) {
-    final regex = RegExp(r'\b\d+[.,]\d{2}\b');
+    final regex = RegExp(r'\b\d+[.,]\d{2}(?!%)\b');
 
     final matches = regex.allMatches(text);
 
@@ -34,5 +33,18 @@ class GoogleTextExtractService {
     final highestValue = values.reduce((a, b) => a > b ? a : b);
 
     return highestValue.toStringAsFixed(2);
+  }
+
+  String? extractCnpj(String text) {
+    final regex = RegExp(
+        r'(?:PJ|NPJ|CNPJ)[^\d]*(\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}|\d{14})');
+    final match = regex.firstMatch(text);
+
+    if (match == null) {
+      return 'null';
+    }
+    String cnpj = match.group(1)!.replaceAll(RegExp(r'[^\d]'), '');
+
+    return '${cnpj.substring(0, 2)}.${cnpj.substring(2, 5)}.${cnpj.substring(5, 8)}/${cnpj.substring(8, 12)}-${cnpj.substring(12)}';
   }
 }

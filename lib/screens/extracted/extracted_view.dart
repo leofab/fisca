@@ -1,4 +1,4 @@
-import 'package:app/screens/camera/camera_view_model.dart';
+import 'package:app/screens/yolo_extracted/yolo_extracted_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:app/service/google_text_extract_service.dart';
 import 'package:provider/provider.dart';
@@ -8,8 +8,8 @@ class ExtractedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cameraViewModel = Provider.of<CameraViewModel>(context);
-    if (cameraViewModel.capturedImage != null) {
+    final yoloExtractedViewModel = Provider.of<YoloExtractedViewModel>(context);
+    if (yoloExtractedViewModel.capturedImage != null) {
       return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: true,
@@ -22,7 +22,7 @@ class ExtractedView extends StatelessWidget {
               Center(
                 child: FutureBuilder(
                     future: GoogleTextExtractService()
-                        .extractText(cameraViewModel.capturedImageFile),
+                        .extractText(yoloExtractedViewModel.capturedImageFile),
                     builder: (context, snapshot) {
                       return Center(
                         child: Column(
@@ -45,7 +45,7 @@ class ExtractedView extends StatelessWidget {
               Center(
                 child: FutureBuilder(
                     future: GoogleTextExtractService()
-                        .extractText(cameraViewModel.capturedImageFile),
+                        .extractText(yoloExtractedViewModel.capturedImageFile),
                     builder: (context, snapshot) {
                       return Center(
                         child: Column(

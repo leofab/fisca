@@ -1,3 +1,4 @@
+import 'package:app/screens/yolo_extracted/yolo_extracted_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import './screens/onboarding/onboarding_screen.dart';
@@ -5,7 +6,6 @@ import 'package:app/screens/auth/login_screen.dart';
 import 'package:app/screens/home/overview_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth/auth_provider.dart' as auth_provider;
-import 'package:app/screens/camera/camera_view_model.dart';
 import 'package:app/screens/extracted/extracted_view.dart';
 import 'package:app/screens/yolo_extracted/yolo_extracted_view.dart';
 import 'utils/theme.dart';
@@ -24,7 +24,7 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => auth_provider.AuthProvider()),
-      ChangeNotifierProvider(create: (_) => CameraViewModel()),
+      ChangeNotifierProvider(create: (_) => YoloExtractedViewModel()),
     ],
     child: const MainApp(),
   ));

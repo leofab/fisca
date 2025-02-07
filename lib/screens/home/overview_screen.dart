@@ -65,8 +65,7 @@ class OverviewScreen extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Image captured!')),
             );
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/extracted', (_) => true);
+            Navigator.pushNamedAndRemoveUntil(context, '/yolo', (_) => true);
           }
         },
         foregroundColor: Colors.deepPurple.shade800,

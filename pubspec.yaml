@@ -19,6 +19,8 @@ dependencies:
   fl_chart: ^0.70.2
   image_picker: any
   google_mlkit_text_recognition: any
+  tflite_flutter: any
+  image: any
 
 dev_dependencies:
   flutter_test:
@@ -32,3 +34,5 @@ flutter:
     - assets/1.png
     - assets/2.png
     - assets/3.png
+    - assets/best_float32.tflite
+    - assets/labels.txt

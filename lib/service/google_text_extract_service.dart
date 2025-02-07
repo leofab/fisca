@@ -30,7 +30,7 @@ class GoogleTextExtractService {
       return double.parse(value);
     }).toList();
 
-    final highestValue = values.reduce((a, b) => a > b ? a : b);
+    final highestValue = values.last;
 
     return highestValue.toStringAsFixed(2);
   }

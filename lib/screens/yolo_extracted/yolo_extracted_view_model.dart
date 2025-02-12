@@ -12,8 +12,6 @@ class YoloExtractedViewModel extends ChangeNotifier {
   File get capturedImageFile => File(_capturedImage!.path);
   List<double> _preprocIm = [];
   List<double> get preprocIm => _preprocIm;
-  List<dynamic> _output = [];
-  List<dynamic> get output => _output;
 
   Future<void> takePhoto() async {
     try {

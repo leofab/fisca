@@ -15,8 +15,10 @@ class YoloExtractedView extends StatelessWidget {
         body: FutureBuilder(
           future: YoloTfliteService()
               .runModel(yoloExtractedViewModel.capturedImageFile),
-          builder: (context, snapshot) =>
-              Center(child: Text(snapshot.hasData ? snapshot.data! : 'null')),
+          builder: (context, snapshot) => Center(
+              child: snapshot.hasData
+                  ? Text(snapshot.data!)
+                  : CircularProgressIndicator()),
         ));
   }
 }

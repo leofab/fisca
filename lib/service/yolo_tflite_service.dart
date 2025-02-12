@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter_vision/flutter_vision.dart';
+import 'package:logger/logger.dart';
 
 class YoloTfliteService {
   Future<String> runModel(File file) async {
     FlutterVision vision = FlutterVision();
     final imageBytes = await file.readAsBytes();
+    Logger().i('Image bytes: ${imageBytes.toString()}');
     await vision.loadYoloModel(
       modelPath: 'assets/best_float32.tflite',
       labels: 'assets/labels.txt',

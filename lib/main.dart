@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'screens/auth/auth_provider.dart' as auth_provider;
 import 'package:app/screens/extracted/extracted_view.dart';
 import 'package:app/screens/yolo_extracted/yolo_extracted_view.dart';
+import 'package:app/screens/loading/loading_screen.dart';
 import 'utils/theme.dart';
 import 'package:logger/logger.dart';
 
@@ -44,17 +45,11 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
       theme: appTheme,
       debugShowCheckedModeBanner: false,
-      home: authProvider.userData == null
-          ? const OnboardingScreen()
-          : authProvider.isLoading
-              ? const Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              : authProvider.user != null
-                  ? OverviewScreen()
-                  : const OnboardingScreen(),
+      home: authProvider.isLoading
+          ? const LoadingScreen()
+          : authProvider.user != null
+              ? OverviewScreen()
+              : const OnboardingScreen(),
       routes: {
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),

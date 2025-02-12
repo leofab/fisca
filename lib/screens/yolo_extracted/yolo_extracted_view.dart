@@ -7,16 +7,19 @@ class YoloExtractedView extends StatelessWidget {
   const YoloExtractedView({super.key});
   @override
   Widget build(BuildContext context) {
-    final yoloExtractedViewModel = Provider.of<YoloExtractedViewModel>(context);
+    //final yoloExtractedViewModel = Provider.of<YoloExtractedViewModel>(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Yolo Extracted View'),
-        ),
+      appBar: AppBar(
+        title: Text('Yolo Extracted View'),
+      ),
+      /*
         body: FutureBuilder(
           future: YoloTfliteService()
               .runModel(yoloExtractedViewModel.capturedImageFile),
           builder: (context, snapshot) =>
               Center(child: Text(snapshot.hasData ? snapshot.data! : 'null')),
-        ));
+        )
+        */
+    );
   }
 }

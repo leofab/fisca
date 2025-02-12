@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart';
 import 'package:logger/logger.dart';
 
@@ -60,24 +59,5 @@ class YoloExtractedViewModel extends ChangeNotifier {
     } catch (e) {
       Logger().e('Error preprocessing image: $e');
     }
-  }
-
-  Future<void> runModel(List<double>? input) async {
-    try {
-      final interpreter =
-          await Interpreter.fromAsset('assets/best_float32.tflite');
-
-      final outputBuffer = List.filled(1 * 640 * 640 * 3, 0);
-      interpreter.run(input!, outputBuffer);
-      _output = outputBuffer;
-      notifyListeners();
-    } catch (e) {
-      Logger().e('Error running model: $e');
-    }
-  }
-
-  void clearImage() {
-    _capturedImage = null;
-    notifyListeners();
   }
 }

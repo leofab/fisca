@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  path: any
+  path_provider: any
   provider: ^6.0.5
   sign_in_button: ^3.0.0
   firebase_core: any
@@ -19,7 +21,7 @@ dependencies:
   fl_chart: ^0.70.2
   image_picker: any
   google_mlkit_text_recognition: any
-  tflite_flutter: any
+  flutter_vision: ^1.1.4
   image: any
 
 dev_dependencies:

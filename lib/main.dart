@@ -1,3 +1,4 @@
+import 'package:app/screens/yolo_extracted/yolo_extracted_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import './screens/onboarding/onboarding_screen.dart';
@@ -5,6 +6,9 @@ import 'package:app/screens/auth/login_screen.dart';
 import 'package:app/screens/home/overview_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth/auth_provider.dart' as auth_provider;
+import 'package:app/screens/extracted/extracted_view.dart';
+import 'package:app/screens/yolo_extracted/yolo_extracted_view.dart';
+import 'package:app/screens/loading/loading_screen.dart';
 import 'utils/theme.dart';
 import 'package:logger/logger.dart';
 
@@ -18,8 +22,11 @@ void main() async {
     logger.e(e);
   }
 
-  runApp(ChangeNotifierProvider(
-    create: (_) => auth_provider.AuthProvider(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => auth_provider.AuthProvider()),
+      ChangeNotifierProvider(create: (_) => YoloExtractedViewModel()),
+    ],
     child: const MainApp(),
   ));
 }
@@ -38,21 +45,17 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
       theme: appTheme,
       debugShowCheckedModeBanner: false,
-      home: authProvider.userData == null
-          ? const OnboardingScreen()
-          : authProvider.isLoading
-              ? const Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              : authProvider.user != null
-                  ? OverviewScreen()
-                  : const OnboardingScreen(),
+      home: authProvider.isLoading
+          ? const LoadingScreen()
+          : authProvider.user != null
+              ? OverviewScreen()
+              : const OnboardingScreen(),
       routes: {
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
         '/home': (context) => OverviewScreen(),
+        '/extracted': (context) => const ExtractedView(),
+        '/yolo': (context) => YoloExtractedView(),
       },
     );
   }

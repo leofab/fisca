@@ -12,8 +12,8 @@ class YoloExtractedViewModel extends ChangeNotifier {
   Uint8List? _capturedImageBytes;
   Uint8List get capturedImageBytes => _capturedImageBytes!;
   /*
-  image_package.Image? _capturedImageImage;
-  image_package.Image get capturedImageImage => _capturedImageImage!;
+  late Image _capturedImageImage;
+  Image get capturedImageImage => _capturedImageImage;
   double _capturedImageImageHeight = 0;
   double get capturedImageImageHeight => _capturedImageImageHeight;
   double _capturedImageImageWidth = 0;
@@ -31,14 +31,14 @@ class YoloExtractedViewModel extends ChangeNotifier {
       if (image != null) {
         _capturedImage = image;
         _capturedImageBytes = await image.readAsBytes();
-        /*
-        _capturedImageImage = (await decodeImageFromList(_capturedImageBytes!))
-            as image_package.Image;
-        _capturedImageImageHeight = (_capturedImageImage!.height) as double;
-        _capturedImageImageWidth = (_capturedImageImage!.width) as double;
-        */
         notifyListeners();
       }
+      /*
+      _capturedImageImage = Image.file(File(capturedImage!.path));
+      _capturedImageImageHeight = (capturedImageImage.height) as double;
+      _capturedImageImageWidth = (capturedImageImage.width) as double;
+      notifyListeners();
+      */
     } catch (e) {
       Logger().d('Error capturing image: $e');
       rethrow;

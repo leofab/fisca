@@ -21,10 +21,14 @@ class YoloTfliteService {
       bytesList: file,
       imageHeight: imageHeight,
       imageWidth: imageWidth,
-      iouThreshold: 0.8,
+      iouThreshold: 0.5,
       confThreshold: 0.4,
       classThreshold: 0.5,
     );
+    for (var element in result) {
+      element['imgWidth'] = imageWidth;
+      element['imgHeight'] = imageHeight;
+    }
     await vision.closeYoloModel();
     return result;
   }

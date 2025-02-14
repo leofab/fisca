@@ -27,10 +27,7 @@ class YoloExtractedView extends StatelessWidget {
         future: YoloTfliteService()
             .runModel(yoloExtractedViewModel.capturedImageBytes),
         builder: (context, snapshot) => Stack(fit: StackFit.expand, children: [
-          Image.file(
-            yoloExtractedViewModel.capturedImageFile,
-            fit: BoxFit.fitWidth,
-          ),
+          Image.file(yoloExtractedViewModel.capturedImageFile),
           if (snapshot.hasData && snapshot.data != null)
             for (var item in snapshot.data!) ...[
               Positioned(
@@ -43,7 +40,7 @@ class YoloExtractedView extends StatelessWidget {
                             ((item["imgWidth"] *
                                     (size.width / item["imgWidth"])) /
                                 (item["imgWidth"] / item["imgHeight"]))) /
-                        2),
+                        2.75), // last double on the top needs to be a number that would fit any screen
                 width: (item["box"][2] - item["box"][0]) *
                     (size.width / item["imgWidth"]),
                 height: (item["box"][3] - item["box"][1]) *

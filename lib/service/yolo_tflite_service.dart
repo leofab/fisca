@@ -54,7 +54,8 @@ class YoloTfliteService {
         String filePath = '${directory.path}/cropped_image_${timestamp}_$i.png';
         File croppedFile = File(filePath);
         await croppedFile.writeAsBytes(croppedImageBytes);
-        croppedImageFiles.add(croppedFile);
+        result['tag'] == 'LABEL' ? 
+        croppedImageFiles.insert(0,croppedFile) : croppedImageFiles.add(croppedFile);
       }
       await vision.closeYoloModel();
       Logger().i('Number of cropped images: ${croppedImageFiles.length}');

@@ -12,11 +12,7 @@ class YoloExtractedView extends StatefulWidget {
 }
 
 class _YoloExtractedViewState extends State<YoloExtractedView> {
-  /*
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _valueController = TextEditingController();
-  */
   @override
   Widget build(BuildContext context) {
     final yoloExtractedViewModel = Provider.of<YoloExtractedViewModel>(context);
@@ -28,17 +24,63 @@ class _YoloExtractedViewState extends State<YoloExtractedView> {
       body: FutureBuilder(
         future: YoloTfliteService()
             .runModel(yoloExtractedViewModel.capturedImageBytes),
-        builder: (context, snapshot) => Stack(fit: StackFit.expand, children: [
-          if (snapshot.hasData && snapshot.data != null)
-            for (var item in snapshot.data!) ...[
-              FutureBuilder(
-                  future: GoogleTextExtractService().extractText(item),
-                  builder: (context, snapshot) =>
-                      Text(snapshot.data.toString()))
-            ]
-          else
-            const Center(child: CircularProgressIndicator()),
-        ]),
+        builder: (context, snapshot) => Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (snapshot.hasData && snapshot.data != null) ...<Widget>[
+                Image.file(snapshot.data![0]),
+                SizedBox(height: 24),
+                FutureBuilder(
+                  future: GoogleTextExtractService()
+                      .extractText((snapshot.data![0])),
+                  builder: (context, snapshot) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      if (snapshot.hasData && snapshot.data != null)
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Name',
+                          ),
+                          initialValue: GoogleTextExtractService()
+                              .extractCnpj(snapshot.data!),
+                        )
+                      else
+                        const Center(child: CircularProgressIndicator()),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 24),
+                Image.file(snapshot.data![1]),
+                SizedBox(height: 24),
+                FutureBuilder(
+                  future:
+                      GoogleTextExtractService().extractText(snapshot.data![1]),
+                  builder: (context, snapshot) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      if (snapshot.hasData && snapshot.data != null)
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Value',
+                          ),
+                          initialValue: GoogleTextExtractService()
+                              .extractHighestValue(snapshot.data!),
+                        )
+                      else
+                        const Center(child: CircularProgressIndicator()),
+                    ],
+                  ),
+                ),
+              ] else
+                const Center(child: CircularProgressIndicator()),
+            ],
+          ),
+        ),
       ),
     );
   }

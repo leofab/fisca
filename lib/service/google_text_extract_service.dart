@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:logger/logger.dart';
 
 class GoogleTextExtractService {
   Future<String> extractText(File file) async {
@@ -44,7 +45,10 @@ class GoogleTextExtractService {
       return 'null';
     }
     String cnpj = match.group(1)!.replaceAll(RegExp(r'[^\d]'), '');
+    Logger().i('cnpj: $cnpj');
 
-    return '${cnpj.substring(0, 2)}.${cnpj.substring(2, 5)}.${cnpj.substring(5, 8)}/${cnpj.substring(8, 12)}-${cnpj.substring(12)}';
+    return cnpj;
+
+    //return '${cnpj.substring(0, 2)}.${cnpj.substring(2, 5)}.${cnpj.substring(5, 8)}/${cnpj.substring(8, 12)}-${cnpj.substring(12)}';
   }
 }

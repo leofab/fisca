@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app/screens/yolo_extracted/yolo_extracted_view_model.dart';
 import 'package:app/service/yolo_tflite_service.dart';
+import 'package:app/service/http_service.dart' as http;
 
 class YoloExtractedView extends StatefulWidget {
   const YoloExtractedView({super.key});
@@ -40,14 +41,27 @@ class _YoloExtractedViewState extends State<YoloExtractedView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       if (snapshot.hasData && snapshot.data != null)
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Name',
-                          ),
-                          initialValue: GoogleTextExtractService()
-                              .extractCnpj(snapshot.data!),
-                        )
+                        FutureBuilder(
+                            future: http.HttpService().cnpjGetName(
+                                GoogleTextExtractService()
+                                    .extractCnpj(snapshot.data!)!),
+                            builder: (context, snapshot) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null)
+                                      TextFormField(
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          labelText: 'Name',
+                                        ),
+                                        initialValue: snapshot.data,
+                                      )
+                                    else
+                                      const Center(
+                                          child: CircularProgressIndicator()),
+                                  ],
+                                ))
                       else
                         const Center(child: CircularProgressIndicator()),
                     ],

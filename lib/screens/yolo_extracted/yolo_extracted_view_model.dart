@@ -11,14 +11,6 @@ class YoloExtractedViewModel extends ChangeNotifier {
   XFile? get capturedImage => _capturedImage;
   Uint8List? _capturedImageBytes;
   Uint8List get capturedImageBytes => _capturedImageBytes!;
-  /*
-  image_package.Image? _capturedImageImage;
-  image_package.Image get capturedImageImage => _capturedImageImage!;
-  double _capturedImageImageHeight = 0;
-  double get capturedImageImageHeight => _capturedImageImageHeight;
-  double _capturedImageImageWidth = 0;
-  double get capturedImageImageWidth => _capturedImageImageWidth;
-  */
   File get capturedImageFile => File(_capturedImage!.path);
 
   Future<void> takePhoto() async {
@@ -31,12 +23,6 @@ class YoloExtractedViewModel extends ChangeNotifier {
       if (image != null) {
         _capturedImage = image;
         _capturedImageBytes = await image.readAsBytes();
-        /*
-        _capturedImageImage = (await decodeImageFromList(_capturedImageBytes!))
-            as image_package.Image;
-        _capturedImageImageHeight = (_capturedImageImage!.height) as double;
-        _capturedImageImageWidth = (_capturedImageImage!.width) as double;
-        */
         notifyListeners();
       }
     } catch (e) {

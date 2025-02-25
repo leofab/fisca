@@ -9,6 +9,7 @@ import 'screens/auth/auth_provider.dart' as auth_provider;
 import 'package:app/screens/extracted/extracted_view.dart';
 import 'package:app/screens/yolo_extracted/yolo_extracted_view.dart';
 import 'package:app/screens/loading/loading_screen.dart';
+import 'package:app/service/db_service.dart';
 import 'utils/theme.dart';
 import 'package:logger/logger.dart';
 
@@ -18,6 +19,12 @@ void main() async {
   try {
     await Firebase.initializeApp();
     logger.d('Firebase initialized');
+    try {
+      await DBService().initializeDB();
+      logger.d('DB initialized');
+    } catch (e) {
+      Logger().e(e);
+    }
   } catch (e) {
     logger.e(e);
   }

@@ -34,7 +34,7 @@ class DBService {
     final List<Map<String, dynamic>> expenses = await db.query('expenses');
     return List.generate(expenses.length, (i) {
       return Expense(
-        id: expenses[i]['id'],
+        id: expenses[i]['id'] as String,
         title: expenses[i]['title'],
         amount: expenses[i]['amount'],
         date: DateTime.parse(expenses[i]['date']),

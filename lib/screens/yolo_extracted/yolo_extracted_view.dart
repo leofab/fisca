@@ -5,6 +5,8 @@ import 'package:app/screens/yolo_extracted/yolo_extracted_view_model.dart';
 import 'package:app/service/yolo_tflite_service.dart';
 import 'package:app/service/http_service.dart' as http;
 import 'package:app/service/db_service.dart' as db;
+import 'package:app/screens/charts/line_chart_view_model.dart'
+    as line_chart_viewmodel;
 
 class YoloExtractedView extends StatefulWidget {
   const YoloExtractedView({super.key});
@@ -123,7 +125,15 @@ class _YoloExtractedViewState extends State<YoloExtractedView> {
           if (_formKey.currentState!.validate()) {
             _formKey.currentState!.save();
             await db.DBService().insertExpense(expanseDb);
+            await line_chart_viewmodel.LineChartViewModel().fetchFromDB();
             if (context.mounted) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return const AlertDialog(
+                      title: Text("Gasto salvo com sucesso!"),
+                    );
+                  });
               Navigator.pop(context, true);
             }
           }

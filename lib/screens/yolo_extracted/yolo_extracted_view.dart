@@ -1,5 +1,6 @@
 import 'package:app/service/google_text_extract_service.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:app/screens/yolo_extracted/yolo_extracted_view_model.dart';
 import 'package:app/service/yolo_tflite_service.dart';
@@ -123,18 +124,22 @@ class _YoloExtractedViewState extends State<YoloExtractedView> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            _formKey.currentState!.save();
-            await db.DBService().insertExpense(expanseDb);
-            await line_chart_viewmodel.LineChartViewModel().fetchFromDB();
-            if (context.mounted) {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return const AlertDialog(
-                      title: Text("Gasto salvo com sucesso!"),
-                    );
-                  });
-              Navigator.pop(context, true);
+            try {
+              _formKey.currentState!.save();
+              await db.DBService().insertExpense(expanseDb);
+              await line_chart_viewmodel.LineChartViewModel().fetchFromDB();
+              if (context.mounted) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const AlertDialog(
+                        title: Text("Gasto salvo com sucesso!"),
+                      );
+                    });
+                Navigator.popAndPushNamed(context, '/home');
+              }
+            } catch (e) {
+              Logger().e(e);
             }
           }
         },

@@ -128,6 +128,7 @@ class _YoloExtractedViewState extends State<YoloExtractedView> {
               _formKey.currentState!.save();
               await db.DBService().insertExpense(expanseDb);
               await line_chart_viewmodel.LineChartViewModel().fetchFromDB();
+              line_chart_viewmodel.LineChartViewModel().getFlSpots();
               if (context.mounted) {
                 showDialog(
                     context: context,
@@ -143,6 +144,7 @@ class _YoloExtractedViewState extends State<YoloExtractedView> {
             }
           }
         },
+        child: Icon(Icons.save),
       ),
     );
   }

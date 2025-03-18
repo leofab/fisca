@@ -11,7 +11,7 @@ class GoogleTextExtractService {
     final InputImage inputImage = InputImage.fromFile(file);
     final RecognizedText recognizedText =
         await textRecognizer.processImage(inputImage);
-    String text = recognizedText.text;
+    final text = recognizedText.text;
     textRecognizer.close();
     return text;
   }
@@ -26,8 +26,7 @@ class GoogleTextExtractService {
     }
 
     final values = matches.map((match) {
-      String value = match.group(0)!;
-      value = value.replaceAll(',', '.');
+      final value = (match.group(0)!).replaceAll(',', '.');
       return double.parse(value);
     }).toList();
 
@@ -44,7 +43,7 @@ class GoogleTextExtractService {
     if (match == null) {
       return 'null';
     }
-    String cnpj = match.group(1)!.replaceAll(RegExp(r'[^\d]'), '');
+    final cnpj = match.group(1)!.replaceAll(RegExp(r'[^\d]'), '');
     Logger().i('cnpj: $cnpj');
 
     return cnpj;

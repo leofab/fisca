@@ -3,15 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:app/screens/charts/line_chart_view_model.dart';
 import 'package:provider/provider.dart';
 
-class _LineChartWidget extends StatelessWidget {
-  const _LineChartWidget({required this.isShowingMainData});
+class _LineChartWidget extends StatefulWidget {
+  const _LineChartWidget({super.key, required this.lineChartViewModel});
 
-  final bool isShowingMainData;
+  final LineChartViewModel lineChartViewModel;
 
   @override
+  State<_LineChartWidget> createState() => _LineChartWidgetState();
+}
+
+class _LineChartWidgetState extends State<_LineChartWidget> {
+  @override
   Widget build(BuildContext context) {
+    List<FlSpot> flSpots = widget.lineChartViewModel.flSpots;
     return LineChart(
-      isShowingMainData ? sampleData1 : sampleData2,
+      sampleData1,
       duration: const Duration(milliseconds: 250),
     );
   }
@@ -24,19 +30,7 @@ class _LineChartWidget extends StatelessWidget {
         lineBarsData: lineBarsData1,
         minX: 0,
         maxX: 30,
-        maxY: 4000.00,
-        minY: 0,
-      );
-
-  LineChartData get sampleData2 => LineChartData(
-        lineTouchData: lineTouchData2,
-        gridData: gridData,
-        titlesData: titlesData2,
-        borderData: borderData,
-        lineBarsData: lineBarsData2,
-        minX: 0,
-        maxX: 30,
-        maxY: 6,
+        maxY: 100.00,
         minY: 0,
       );
 
@@ -69,52 +63,43 @@ class _LineChartWidget extends StatelessWidget {
         lineChartBarData1_3,
       ];
 
-  LineTouchData get lineTouchData2 => const LineTouchData(
-        enabled: false,
-      );
-
-  FlTitlesData get titlesData2 => FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: bottomTitles,
-        ),
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: leftTitles(),
-        ),
-      );
-
-  List<LineChartBarData> get lineBarsData2 => [
-        lineChartBarData2_1,
-        lineChartBarData2_2,
-        lineChartBarData2_3,
-      ];
-
   Widget leftTitleWidgets(double value, TitleMeta meta) {
+    List<FlSpot> flSpots = widget.lineChartViewModel.flSpots;
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 14,
     );
     String text;
     switch (value.toInt()) {
-      case 1000:
-        text = '1000';
+      case 10:
+        text = '10';
         break;
-      case 2000:
-        text = '2000';
+      case 20:
+        text = '20';
         break;
-      case 3000:
-        text = '3000';
+      case 30:
+        text = '30';
         break;
-      case 4000:
-        text = '4000';
+      case 40:
+        text = '40';
         break;
-      case 5000:
-        text = '5000';
+      case 50:
+        text = '50';
+        break;
+      case 60:
+        text = '60';
+        break;
+      case 70:
+        text = '70';
+        break;
+      case 80:
+        text = '80';
+        break;
+      case 90:
+        text = '90';
+        break;
+      case 100:
+        text = '100';
         break;
       default:
         return Container();
@@ -138,6 +123,7 @@ class _LineChartWidget extends StatelessWidget {
       );
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
+    List<FlSpot> flSpots = widget.lineChartViewModel.flSpots;
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 16,
@@ -171,6 +157,7 @@ class _LineChartWidget extends StatelessWidget {
     );
   }
 
+  List<FlSpot> flSpots = LineChartViewModel().flSpots;
   SideTitles get bottomTitles => SideTitles(
         showTitles: true,
         reservedSize: 32,
@@ -199,8 +186,8 @@ class _LineChartWidget extends StatelessWidget {
         dotData: const FlDotData(show: false),
         belowBarData: BarAreaData(show: false),
         spots: const [
-          FlSpot(1, 4000),
-          FlSpot(30, 4000),
+          FlSpot(1, 100),
+          FlSpot(30, 100),
         ],
       );
 
@@ -214,7 +201,7 @@ class _LineChartWidget extends StatelessWidget {
         show: false,
         color: Colors.cyanAccent.withValues(alpha: 0.7),
       ),
-      spots: LineChartViewModel().getFlSpots());
+      spots: [...flSpots]);
 
   LineChartBarData get lineChartBarData1_3 => LineChartBarData(
         isCurved: true,
@@ -225,133 +212,71 @@ class _LineChartWidget extends StatelessWidget {
         belowBarData: BarAreaData(show: false),
         spots: const [],
       );
-
-  LineChartBarData get lineChartBarData2_1 => LineChartBarData(
-        isCurved: true,
-        curveSmoothness: 0,
-        color: Colors.deepPurple.withAlpha(30),
-        barWidth: 4,
-        isStrokeCapRound: true,
-        dotData: const FlDotData(show: false),
-        belowBarData: BarAreaData(show: false),
-        spots: const [
-          FlSpot(1, 1),
-          FlSpot(3, 4),
-          FlSpot(5, 1.8),
-          FlSpot(7, 5),
-          FlSpot(10, 2),
-          FlSpot(12, 2.2),
-          FlSpot(13, 1.8),
-        ],
-      );
-
-  LineChartBarData get lineChartBarData2_2 => LineChartBarData(
-        isCurved: true,
-        color: Colors.deepPurpleAccent.withValues(alpha: 0.5),
-        barWidth: 4,
-        isStrokeCapRound: true,
-        dotData: const FlDotData(show: false),
-        belowBarData: BarAreaData(
-          show: true,
-          color: Colors.deepPurpleAccent.withValues(alpha: 0.2),
-        ),
-        spots: const [
-          FlSpot(1, 1),
-          FlSpot(3, 2.8),
-          FlSpot(7, 1.2),
-          FlSpot(10, 2.8),
-          FlSpot(12, 2.6),
-          FlSpot(13, 3.9),
-        ],
-      );
-
-  LineChartBarData get lineChartBarData2_3 => LineChartBarData(
-        isCurved: true,
-        curveSmoothness: 0,
-        color: Colors.blueGrey.withValues(alpha: 0.5),
-        barWidth: 2,
-        isStrokeCapRound: true,
-        dotData: const FlDotData(show: true),
-        belowBarData: BarAreaData(show: false),
-        spots: const [
-          FlSpot(1, 3.8),
-          FlSpot(3, 1.9),
-          FlSpot(6, 5),
-          FlSpot(10, 3.3),
-          FlSpot(13, 4.5),
-        ],
-      );
 }
 
 class LineChartSample1 extends StatefulWidget {
-  const LineChartSample1({super.key});
+  LineChartSample1({super.key}) {
+    LineChartViewModel().getFlSpots();
+  }
 
   @override
   State<StatefulWidget> createState() => LineChartSample1State();
 }
 
 class LineChartSample1State extends State<LineChartSample1> {
-  late bool isShowingMainData;
-
   @override
   void initState() {
     super.initState();
-    isShowingMainData = true;
+    LineChartViewModel().getFlSpots();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<LineChartViewModel>(
-        create: (_) => LineChartViewModel(),
-        child: AspectRatio(
-          aspectRatio: 1.23,
-          child: Stack(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 37,
-                  ),
-                  const Text(
-                    'Monthly Sales',
-                    style: TextStyle(
-                      color: Colors.white10,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
+    return ChangeNotifierProvider(
+      create: (_) => LineChartViewModel(),
+      child: Consumer<LineChartViewModel>(
+        builder: (context, viewModel, child) {
+          return AspectRatio(
+            aspectRatio: 1.23,
+            child: Stack(
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 37,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 37,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 16, left: 6),
-                      child: _LineChartWidget(
-                          isShowingMainData: isShowingMainData),
+                    const Text(
+                      'Monthly Expenditures', 
+                      style: TextStyle(
+                        color: Colors.white10,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.refresh,
-                  color: Colors.black
-                      .withValues(alpha: isShowingMainData ? 1.0 : 0.5),
+                    const SizedBox(
+                      height: 37,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16, left: 6),
+                        child: _LineChartWidget(
+                          lineChartViewModel: viewModel,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
                 ),
-                onPressed: () {
-                  setState(() {
-                    isShowingMainData = !isShowingMainData;
-                  });
-                },
-              )
-            ],
-          ),
-        ));
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }

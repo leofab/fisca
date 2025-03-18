@@ -5,35 +5,33 @@ import 'package:app/service/db_service.dart' as db;
 import 'package:logger/logger.dart';
 
 class LineChartViewModel extends ChangeNotifier {
+  LineChartViewModel() {
+    getFlSpots();
+  }
+  List<FlSpot> _flSpots = [];
+  List<FlSpot> get flSpots => _flSpots;
   List<Expense> _expenses = [];
   List<Expense> get expenses => _expenses;
   bool? _hasData;
   bool get hasData => _hasData!;
 
-  Future<void> fetchFromDB() async {
+  Future<void> getFlSpots() async {
     try {
       _expenses = await db.DBService().fetchFromDB();
-      notifyListeners();
-    } catch (e) {
-      Logger().e(e);
-      rethrow;
-    }
-  }
-
-  List<FlSpot> getFlSpots() {
-    try {
-      if (expenses.isEmpty) return [];
+      if (_expenses.isEmpty) _flSpots = [];
       List<FlSpot> spots = [];
       double value = 0;
       for (int i = 0; i < expenses.length; i++) {
         value += expenses[i].amount;
         spots.add(FlSpot(expenses[i].date.day.toDouble(), value));
       }
-      notifyListeners();
-      return spots;
+      _flSpots = spots;
     } catch (e) {
       Logger().e(e);
       rethrow;
+    } finally {
+      Logger().i(flSpots);
+      notifyListeners();
     }
   }
 }

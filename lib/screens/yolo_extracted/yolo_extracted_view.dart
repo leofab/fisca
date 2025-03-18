@@ -126,9 +126,14 @@ class _YoloExtractedViewState extends State<YoloExtractedView> {
           if (_formKey.currentState!.validate()) {
             try {
               _formKey.currentState!.save();
+              _formKey.currentState!.reset();
               await db.DBService().insertExpense(expanseDb);
-              await line_chart_viewmodel.LineChartViewModel().fetchFromDB();
-              line_chart_viewmodel.LineChartViewModel().getFlSpots();
+              await line_chart_viewmodel.LineChartViewModel().getFlSpots();
+              expanseDb = {};
+              yoloExtractedViewModel.clearState();
+            } catch (e) {
+              Logger().e(e);
+            } finally {
               if (context.mounted) {
                 showDialog(
                     context: context,
@@ -139,8 +144,6 @@ class _YoloExtractedViewState extends State<YoloExtractedView> {
                     });
                 Navigator.popAndPushNamed(context, '/home');
               }
-            } catch (e) {
-              Logger().e(e);
             }
           }
         },

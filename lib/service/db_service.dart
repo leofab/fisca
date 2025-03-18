@@ -47,6 +47,7 @@ class DBService {
           date: DateTime.parse(expenses[i]['date']),
         );
       });
+      
     } catch (e) {
       Logger().e(e);
       rethrow;

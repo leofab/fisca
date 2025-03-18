@@ -1,5 +1,6 @@
 import 'package:app/screens/auth/auth_provider.dart';
 import 'package:app/screens/charts/line_chart.dart' as line_chart;
+import 'package:app/screens/charts/line_chart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app/models/expense.dart';
@@ -8,14 +9,19 @@ import 'package:app/mock/expenses_mock_data.dart';
 
 class OverviewScreen extends StatelessWidget {
   final List<Expense> expenses = ExpensesMockData.getMockExpenses();
-  OverviewScreen({super.key});
+  OverviewScreen(
+      {super.key,
+      required LineChartViewModel lineChartViewModel,
+      required YoloExtractedViewModel yoloExtractedViewModel}) {
+    lineChartViewModel.getFlSpots();
+  }
 
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final userData = authProvider.userData;
     final yoloExtractedViewModel = Provider.of<YoloExtractedViewModel>(context);
-
+    final lineChartViewModel = Provider.of<LineChartViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -32,32 +38,34 @@ class OverviewScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                'Welcome, ${userData?['name']}!',
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'Overview',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 24),
-              line_chart.LineChartSample1(),
-            ],
-          )),
+      body: ListenableBuilder(
+          listenable: lineChartViewModel,
+          builder: (context, _) => Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Welcome, ${userData?['name']}!',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Overview',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  line_chart.LineChartSample1(),
+                ],
+              ))),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await yoloExtractedViewModel.takePhoto();

@@ -1,4 +1,6 @@
+import 'package:app/screens/onboarding/onboarding_view_model.dart';
 import 'package:app/screens/yolo_extracted/yolo_extracted_view_model.dart';
+import 'package:app/screens/charts/line_chart_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import './screens/onboarding/onboarding_screen.dart';
@@ -31,8 +33,10 @@ void main() async {
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => auth_provider.AuthProvider()),
-      ChangeNotifierProvider(create: (_) => YoloExtractedViewModel()),
+      ChangeNotifierProvider(create: (context) => auth_provider.AuthProvider()),
+      ChangeNotifierProvider(create: (context) => YoloExtractedViewModel()),
+      ChangeNotifierProvider(create: (context) => LineChartViewModel()),
+      ChangeNotifierProvider(create: (context) => OnboardingViewModel()),
     ],
     child: const MainApp(),
   ));
@@ -55,12 +59,18 @@ class _MainAppState extends State<MainApp> {
       home: authProvider.isLoading
           ? const LoadingScreen()
           : authProvider.user != null
-              ? OverviewScreen()
+              ? OverviewScreen(
+                  lineChartViewModel: context.read(),
+                  yoloExtractedViewModel: context.read(),
+                )
               : const OnboardingScreen(),
       routes: {
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
-        '/home': (context) => OverviewScreen(),
+        '/home': (context) => OverviewScreen(
+              lineChartViewModel: context.read(),
+              yoloExtractedViewModel: context.read(),
+            ),
         '/extracted': (context) => const ExtractedView(),
         '/yolo': (context) => YoloExtractedView(),
       },
